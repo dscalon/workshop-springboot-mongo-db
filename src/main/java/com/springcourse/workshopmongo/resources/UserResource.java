@@ -56,4 +56,18 @@ public class UserResource {
 
     return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.PUT) //também pode usar @PostMapping
+    public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){ //RequestBody para que o endpoint aceite o objeto do parâmetro
+        User obj = service.fromDTO(objDto);
+        obj.setId(id);
+        obj = service.update(obj);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+
+
+
 }
