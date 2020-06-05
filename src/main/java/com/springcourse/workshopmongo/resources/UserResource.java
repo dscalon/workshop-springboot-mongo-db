@@ -1,6 +1,7 @@
 package com.springcourse.workshopmongo.resources;
 
 import com.springcourse.workshopmongo.domain.User;
+import com.springcourse.workshopmongo.dto.UserDTO;
 import com.springcourse.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController //Diz que é um recurso REST
 @RequestMapping(value = "/users") //Qual o caminho do endpoint?
@@ -20,10 +20,14 @@ public class UserResource {
     private UserService service;
 
     @RequestMapping(method = RequestMethod.GET) //diz que esse método é um endpoint também pode ser o @Getmapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll(){
 
         List<User> list = service.findAll();
-        return ResponseEntity.ok().body(list); //retorna o código http de sucesso mais o corpo da resposta
+        List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        //converte a lista numa stream para poder trabalhar com expressões lambda  e diz que para cada elemento x da minha lista vai ser instanciado um elemento
+        // UserDTO com as informações do elemento. Depois a stream é reconvertida para list
+
+        return ResponseEntity.ok().body(listDto); //retorna o código http de sucesso mais o corpo da resposta
 
 
 
