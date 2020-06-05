@@ -1,10 +1,15 @@
 package com.springcourse.workshopmongo.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Document(collection = "user") //define o nome da coleção no banco de dados
 public class User implements Serializable {
 
+    @Id
     private String id;
     private String name;
     private String email;
