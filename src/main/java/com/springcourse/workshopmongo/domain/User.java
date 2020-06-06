@@ -1,9 +1,12 @@
 package com.springcourse.workshopmongo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "user") //define o nome da coleção no banco de dados
@@ -13,6 +16,9 @@ public class User implements Serializable {
     private String id;
     private String name;
     private String email;
+
+    @DBRef(lazy = true)  //Dizendo ao spring que uma coleção está referenciando outra coleção. Lazy = true diz que a gente não vai carregar automaticamente os posts quando recuperarmos um usuário do banco de dados
+    private List<Post> posts = new ArrayList<>();
 
     public User() {
     }
@@ -45,6 +51,10 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
     }
 
     @Override
